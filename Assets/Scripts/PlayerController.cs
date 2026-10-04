@@ -18,12 +18,14 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody2D rb;
     private Animator anim;
+    private SpriteRenderer sr;
     private bool isGrounded;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        sr = GetComponent<SpriteRenderer>();
     }
 
     private void Update()
@@ -57,14 +59,23 @@ public class PlayerController : MonoBehaviour
             movement = 1f;
         }
 
-        rb.linearVelocity = new Vector2(movement * moveSpeed,rb.linearVelocity.y);
+        rb.linearVelocity = new Vector2(movement * moveSpeed, rb.linearVelocity.y);
+
+        if (movement > 0)
+        {
+            // Mira a la derecha (positivo)
+            transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+        }
+        else if (movement < 0)
+        {
+            // Mira a la izquierda (negativo)
+            transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+        }
     }
 
     private void Jump()
     {
         rb.linearVelocity = new Vector2(rb.linearVelocity.x,jumpForce);
-
-        anim.SetTrigger("Jump");
     }
 
     private void CheckGround()
