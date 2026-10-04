@@ -5,6 +5,7 @@ public class GameTimer : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI timerText;
     [SerializeField] private float timeRemaining = 60f;
+    [SerializeField] private GameManager gameManager;
 
     private bool timerRunning = true;
 
@@ -37,5 +38,14 @@ public class GameTimer : MonoBehaviour
     private void TimeOut()
     {
         Debug.Log("¡Se acabó el tiempo!");
+
+        if (gameManager != null)
+        {
+            gameManager.TimeOut();
+        }
+        else
+        {
+            Debug.LogWarning("Falta asignar el GameManager en el Inspector del Timer.");
+        }
     }
 }
