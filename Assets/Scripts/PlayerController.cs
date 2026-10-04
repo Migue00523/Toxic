@@ -17,11 +17,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
 
     private Rigidbody2D rb;
+    private Animator anim;
     private bool isGrounded;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
     }
 
     private void Update()
@@ -32,6 +34,13 @@ public class PlayerController : MonoBehaviour
         {
             Jump();
         }
+
+        float horizontalInput = 0f;
+        if (Input.GetKey(leftKey)) horizontalInput = -1f;
+        if (Input.GetKey(rightKey)) horizontalInput = 1f;
+
+        anim.SetFloat("Speed", Mathf.Abs(horizontalInput * moveSpeed));
+        anim.SetFloat("VerticalVelocity", rb.linearVelocity.y);
     }
 
     private void FixedUpdate()
@@ -48,27 +57,19 @@ public class PlayerController : MonoBehaviour
             movement = 1f;
         }
 
-        rb.linearVelocity = new Vector2(
-            movement * moveSpeed,
-            rb.linearVelocity.y
-        );
+        rb.linearVelocity = new Vector2(movement * moveSpeed,rb.linearVelocity.y);
     }
 
     private void Jump()
     {
-        rb.linearVelocity = new Vector2(
-            rb.linearVelocity.x,
-            jumpForce
-        );
+        rb.linearVelocity = new Vector2(rb.linearVelocity.x,jumpForce);
+
+        anim.SetTrigger("Jump");
     }
 
     private void CheckGround()
     {
-        isGrounded = Physics2D.OverlapCircle(
-            groundCheck.position,
-            groundCheckRadius,
-            groundLayer
-        );
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position,groundCheckRadius,groundLayer);
     }
 
     private void OnDrawGizmosSelected()
@@ -76,9 +77,6 @@ public class PlayerController : MonoBehaviour
         if (groundCheck == null)
             return;
 
-        Gizmos.DrawWireSphere(
-            groundCheck.position,
-            groundCheckRadius
-        );
+        Gizmos.DrawWireSphere(groundCheck.position,groundCheckRadius);
     }
 }
