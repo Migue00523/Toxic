@@ -13,7 +13,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject player2;
 
     [Header("Monster Spawn")]
-    [SerializeField] private GameObject monsterPrefab; // Arrastra aquí tu Prefab de Monstruo desde el Project
+    [SerializeField] private GameObject monsterPrefab; 
+
+    [SerializeField] private AudioSource audioSource;   
+    [SerializeField] private AudioClip growlSoundClip;
 
     private bool timeIsUp = false;
 
@@ -34,11 +37,15 @@ public class GameManager : MonoBehaviour
             blackScreenPanel.color = new Color(0, 0, 0, 1);
         }
 
-        // 2. Esperar los 2 segundos pedidos
+        if (audioSource != null && growlSoundClip != null)
+        {
+            audioSource.PlayOneShot(growlSoundClip);
+        }
+
+        
         yield return new WaitForSeconds(2f);
 
-        // 3. Decidir quién es la presa y quién es reemplazado/eliminado
-        // Digamos que Player 2 desaparece y en su lugar aparece el monstruo para cazar a Player 1
+       
         if (player2 != null && monsterPrefab != null)
         {
             // Guardamos la posición exacta donde estaba el Player 2

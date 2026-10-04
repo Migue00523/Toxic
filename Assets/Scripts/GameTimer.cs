@@ -4,7 +4,7 @@ using TMPro;
 public class GameTimer : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI timerText;
-    [SerializeField] private float timeRemaining = 60f;
+    [SerializeField] private float timeRemaining = 15f;
     [SerializeField] private GameManager gameManager;
 
     private bool timerRunning = true;
