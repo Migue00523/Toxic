@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 1ff943c4b398e8b4fa5652b96fe6764b
+guid: 1c5651ab3b7ca2f47adb40655f488c11
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -9199180995122937940
-    second: Background #1_0
+      213: 8788680079592284942
+    second: TimePotion_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Background #1_0
+      name: TimePotion_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 1380
-        height: 752
+        x: 10
+        y: 1
+        width: 11
+        height: 30
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: caf3c21df91f55080800000000000000
-      internalID: -9199180995122937940
+      spriteID: e0366acc7f9a7f970800000000000000
+      internalID: 8788680079592284942
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Background #1_0: -9199180995122937940
+      TimePotion_0: 8788680079592284942
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

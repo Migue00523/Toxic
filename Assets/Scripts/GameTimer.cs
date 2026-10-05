@@ -4,10 +4,15 @@ using TMPro;
 public class GameTimer : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI timerText;
-    [SerializeField] private float timeRemaining = 15f;
+    [SerializeField] private float timeRemaining = 35f;
     [SerializeField] private GameManager gameManager;
 
     private bool timerRunning = true;
+
+    private void Start()
+    {
+        UpdateTimerDisplay();
+    }
 
     private void Update()
     {
@@ -33,6 +38,12 @@ public class GameTimer : MonoBehaviour
         int seconds = Mathf.FloorToInt(timeRemaining % 60);
 
         timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+    }
+
+    public void AddTime(float extraTime)
+    {
+        timeRemaining += extraTime;
+        UpdateTimerDisplay();
     }
 
     private void TimeOut()
