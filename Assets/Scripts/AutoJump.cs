@@ -2,8 +2,12 @@ using UnityEngine;
 
 public class AutoJump : MonoBehaviour
 {
+    [Header("Jump Settings")]
     [SerializeField] private float jumpForce = 15f;
-    [SerializeField] private Transform nextFloorPosition;
+
+    [Header("Destination")]
+    [SerializeField] private Transform targetFloorPosition; // La posición a la que se teletransportará
+    [SerializeField] private bool isGoingUp = true;         // Marca true si sube, false si baja
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -16,12 +20,15 @@ public class AutoJump : MonoBehaviour
 
         if (rb != null)
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+            // Si va hacia arriba le da impulso, si va hacia abajo respeta la gravedad
+            float appliedForce = isGoingUp ? jumpForce : 0f;
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, appliedForce);
         }
 
-        if (nextFloorPosition != null)
+        if (targetFloorPosition != null)
         {
-            player.transform.position = nextFloorPosition.position;
+            // Teletransporte automático al tocar el collider
+            player.transform.position = targetFloorPosition.position;
         }
     }
 }

@@ -4,8 +4,9 @@ using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
-    [Header("UI Transition")]
+    [Header("UI Transition & Game Over")]
     [SerializeField] private Image blackScreenPanel;
+    [SerializeField] private GameObject gameOverPanel;
     [SerializeField] private float fadeDuration = 2f;
 
     [Header("Players")]
@@ -13,12 +14,24 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject player2;
 
     [Header("Monster Spawn")]
-    [SerializeField] private GameObject monsterPrefab; 
+    [SerializeField] private GameObject monsterPrefab;
 
-    [SerializeField] private AudioSource audioSource;   
+    [Header("Audio")]
+    [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip growlSoundClip;
 
+    [Header("Scene Manager Reference")]
+    [SerializeField] private GameSceneManager gameSceneManager; // <--- ¡AQUÍ ESTABA FALTANDO LA DECLARACIÓN!
+
     private bool timeIsUp = false;
+
+    private void Start()
+    {
+        if (gameOverPanel != null)
+        {
+            gameOverPanel.SetActive(false);
+        }
+    }
 
     public void TimeOut()
     {
@@ -37,37 +50,50 @@ public class GameManager : MonoBehaviour
             blackScreenPanel.color = new Color(0, 0, 0, 1);
         }
 
+        // 2. Reproducir gruñido
         if (audioSource != null && growlSoundClip != null)
         {
             audioSource.PlayOneShot(growlSoundClip);
         }
 
-        
+        // 3. Esperar los 2 segundos
         yield return new WaitForSeconds(2f);
 
-       
+        // 4. Reemplazar al Jugador 2 por el Monstruo
         if (player2 != null && monsterPrefab != null)
         {
-            // Guardamos la posición exacta donde estaba el Player 2
             Vector3 spawnPosition = player2.transform.position;
-
-            // Desactivamos al Player 2
             player2.SetActive(false);
 
-            // Instanciamos el monstruo en esa misma posición
             GameObject spawnedMonster = Instantiate(monsterPrefab, spawnPosition, Quaternion.identity);
 
-            // Le asignamos a la IA del monstruo que persiga al Player 1
             MonsterAI hunterAI = spawnedMonster.GetComponent<MonsterAI>();
             if (hunterAI != null && player1 != null)
             {
                 hunterAI.target = player1.transform;
+
+                // <--- ¡IMPORTANTE! Pasamos esta referencia para que el monstruo pueda activar el Game Over
+                hunterAI.gameManagerRef = this;
             }
         }
 
+        // 5. Quitar la pantalla negra
         if (blackScreenPanel != null)
         {
             blackScreenPanel.gameObject.SetActive(false);
+        }
+    }
+
+    public void TriggerGameOver()
+    {
+        if (gameOverPanel != null)
+        {
+            gameOverPanel.SetActive(true);
+        }
+
+        if (gameSceneManager != null)
+        {
+            gameSceneManager.PauseGame();
         }
     }
 }
